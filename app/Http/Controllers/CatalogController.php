@@ -12,4 +12,11 @@ class CatalogController extends Controller
 
         return view('catalog.edit', ['id' => $id]);
     }
+
+    public function show($id)
+    {
+        if ($id <= 10){$id = $id;} else {$id = 10;}
+
+        return view('catalog.show', ['id' => $id]);
+    }
 }
