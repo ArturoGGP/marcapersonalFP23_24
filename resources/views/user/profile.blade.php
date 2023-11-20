@@ -1,7 +1,6 @@
 @extends('dopetrope.master')
 
 @section('content')
-
-    Modificar proyecto {{$id}}
+    Esta es la vista del usuario {{$usuario['nombre']}}
 
 @stop
