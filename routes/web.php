@@ -8,6 +8,7 @@ use App\Http\Controllers\ReconocimientoController;
 use App\Http\Controllers\CurriculoController;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\DocenteController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,11 +38,11 @@ Route::prefix('catalog')->group(function () {
 
     Route::get('/show/{id}', [CatalogController::class, 'getShow'])->where('id', '[0-9]+');
 
-    Route::get('/create', [CatalogController::class, 'getCreate']);
+    Route::get('/create', [CatalogController::class, 'getCreate'])->middleware('auth');
 
-    Route::get('/edit/{id}', [CatalogController::class, 'getEdit'])->where('id', '[0-9]+');
+    Route::get('/edit/{id}', [CatalogController::class, 'getEdit'])->where('id', '[0-9]+')->middleware('auth');;
 
-    Route::put('/edit/{id}', [CatalogController::class, 'putEdit'])->where('id', '[0-9]+');
+    Route::put('/edit/{id}', [CatalogController::class, 'putEdit'])->where('id', '[0-9]+')->middleware('auth');
 });
 
 Route::prefix('reconocimientos')->group(function () {
@@ -132,3 +133,15 @@ Route::get('perfil/{id?}', function ($id = null) {
         return "Visualizar el currículo de " . $id;
     }
 })->where('id', '[0-9]+')->name('perfil');
+
+Route::get('/dashboard', function () {
+        return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
