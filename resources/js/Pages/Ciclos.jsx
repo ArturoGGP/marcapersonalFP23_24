@@ -35,7 +35,7 @@ const FamiliaInput = () => (
 const CodigoFamiliaInput = () => (
     <ReferenceInput label="cod Familia Profesional" source="familia_id" reference="familias_profesionales">
         <SelectInput
-        label="cod Familia Profesional"
+        label="Cod Familia Profesional"
         source="familia_id"
         optionText={record => record && `${record.codigo}`} />
     </ReferenceInput>
@@ -60,9 +60,9 @@ export const CicloList = () => {
         </SimpleList>
       ) : (
         <Datagrid bulkActionButtons={false} >
-          <TextField source="id" />
+          <NumberField source="id" />
           <TextField source="codCiclo" />
-          <ReferenceField label="cod Familia Profesional" source="familia_id" reference="familias_profesionales">
+          <ReferenceField label="Cod Familia Profesional" source="familia_id" reference="familias_profesionales">
             <FunctionField render={record => record && `${record.codigo}`} />
           </ReferenceField>
           <ReferenceField label="Familia Profesional" source="familia_id" reference="familias_profesionales">
@@ -86,7 +86,7 @@ export const CicloTitle = () => {
 export const CicloEdit = () => (
     <Edit title={<CicloTitle />}>
     <SimpleForm>
-        <TextInput source="id" disabled />
+        <NumberInput source="id" disabled />
         <TextInput source="codCiclo" />
         <CodigoFamiliaInput />
         <FamiliaInput />
@@ -99,7 +99,7 @@ export const CicloEdit = () => (
 export const CicloShow = () => (
     <Show>
         <SimpleShowLayout>
-            <TextField source="id" />
+            <NumberField source="id" />
             <TextField source="codCiclo" />
             <ReferenceField label="cod Familia Profesional" source="familia_id" reference="familias_profesionales">
                 <FunctionField render={record => record && `${record.codigo}`} />
@@ -116,6 +116,7 @@ export const CicloShow = () => (
 export const CicloCreate = () => (
     <Create>
         <SimpleForm>
+            <NumberInput source="id" />
             <TextInput source="codCiclo" />
             <CodigoFamiliaInput />
             <FamiliaInput />
