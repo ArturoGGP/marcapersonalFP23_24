@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Curriculo;
 use Illuminate\Http\Request;
 use App\Http\Resources\CurriculoResource;
+use Illuminate\Support\Facades\Gate;
 
 class CurriculoController extends Controller
 {
@@ -29,11 +30,17 @@ class CurriculoController extends Controller
      */
     public function store(Request $request)
     {
-        $Curriculo = json_decode($request->getContent(), true);
+        /*
+        abort_if ($request->user()->cannot('update', $curriculo), 403);
+        */
 
-        $Curriculo = Curriculo::create($Curriculo['data']['attributes']);
+        $this->authorize('create', Curriculo::class);
 
-        return new CurriculoResource($Curriculo);
+        $curriculo = json_decode($request->getContent(), true);
+
+        $curriculo = Curriculo::create($curriculo);
+
+        return new CurriculoResource($curriculo);
     }
 
     /**
@@ -49,6 +56,11 @@ class CurriculoController extends Controller
      */
     public function update(Request $request, Curriculo $curriculo)
     {
+        /*
+        abort_if ($request->user()->cannot('update', $curriculo), 403);
+        */
+
+        $this->authorize('update', $curriculo);
         $curriculoData = json_decode($request->getContent(), true);
         $curriculo->update($curriculoData);
 
@@ -61,5 +73,15 @@ class CurriculoController extends Controller
     public function destroy(Curriculo $Curriculo)
     {
         $Curriculo->delete();
+    }
+
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Curriculo::class, 'curriculo');
     }
 }
